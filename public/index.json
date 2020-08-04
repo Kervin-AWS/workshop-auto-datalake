@@ -1,0 +1,92 @@
+[
+{
+	"uri": "/",
+	"title": "AWS 锂电池寿命预测",
+	"tags": [],
+	"description": "",
+	"content": "  AWS 锂电池寿命预测 本实验指南讨论了如何利用AWS SageMaker进行锂电池寿命预测。\n Overview   准备工作   数据概览   数据预处理   模型训练   模型预测   "
+},
+{
+	"uri": "/010_introduction/",
+	"title": "Overview",
+	"tags": [],
+	"description": "",
+	"content": "如何准确的根据电池放电过程中的相关信息，预测出电池的剩余寿命，是一个具有实际生产价值的问题。\n本实验基于公开的锂电池数据集，该数据集收录了124枚电池（APR18650M1A），从出厂到生命终结（电池满电容量为正常值的80%）过程中电流、温度、等关键指标。本实验将基于以上数据，进行锂电池的剩余寿命的预测研究。\n本实验的目标是训练一个可以根据20轮充放电的电池监控历史数据，预测该电池的剩余充电寿命的神经网络，本实验的神经网络架构主要运用 LSTM 和CNN 的融合框架。\n本实验将从SageMaker NoteBook创建开始介绍，并引导您基于SageMaker实现：\n 电池数据导入\n 数据概览\n 数据预处理\n 模型训练\n 模型预测\n  "
+},
+{
+	"uri": "/020_importdata/021_create_sagemaker/",
+	"title": "创建SageMaker笔记本实例",
+	"tags": [],
+	"description": "",
+	"content": "  登陆SageMaker控制台，点击右上角的创建笔记本实例  填写笔记本实例的名称，如battery-prediction，选择合适的实例类型，建议ml.t2.xlarge卷大小请设置为 \u0026gt;= 20g，本实验建议为20g  权限和加密部分，选择“创建新角色” 保持默认，然后选择创建角色。然后点击“创建笔记本实例“ 等待实例加载，大约需要一到两分钟。  点击“打开JupyterLab”，进入SageMaker JupyterLab。 至此您已经完成SageMaker Notebook的创建。\n  "
+},
+{
+	"uri": "/020_importdata/022_import_from_s3/",
+	"title": "从S3获取导入数据",
+	"tags": [],
+	"description": "",
+	"content": "  从github 拉取源码\n将 https://github.com/Kervin-AWS/Auto-Immersion-Day-Lab2.git 复制到下面的框中, 然后点击CLONE  打开data_download_script.ipynb,点击右上角的kernel选择模块，选择conda_tensorflow_p36  逐一选中代码框，然后点击上方的运行按钮  创建data目录  开始下载数据集   "
+},
+{
+	"uri": "/020_importdata/",
+	"title": "准备工作",
+	"tags": [],
+	"description": "",
+	"content": " 准备工作 本章节将逐步带领您完成本实验的准备工作，您将创建一个 SageMaker 笔记本实例，并从S3获取实验数据。\n我们将分别从以下步骤进行部署：\n 创建SageMaker笔记本实例   从S3获取导入数据   "
+},
+{
+	"uri": "/030_datashow/",
+	"title": "数据概览",
+	"tags": [],
+	"description": "",
+	"content": "对数据进行预览以及初步分析，有利于我们了解数据，并选择合适的数据预处理以及模型方法。\n本章节将逐步带领您对电池数据进行预览。\n 打开data_analysis.ipynb  导入待分析数据  选取一组数据如b1c2，进行数据探查  绘制时序曲线  绘制电压关系曲线  绘制大电流放电场景下的检测数据  绘制电压与电量微分，电压与温度之间的关系   "
+},
+{
+	"uri": "/040_data_preprocess/",
+	"title": "数据预处理",
+	"tags": [],
+	"description": "",
+	"content": "本章节将逐步带领您实现数据预处理。\n 打开data_preprocessing.ipynb，并运行函数导入cell  启动数据预处理脚本  加载训练数据生成函数  启动训练数据生成cell   "
+},
+{
+	"uri": "/050_model_train/",
+	"title": "模型训练",
+	"tags": [],
+	"description": "",
+	"content": "本章节将逐步带领您模型训练。\n 打开trainer.ipynb  点击右上角的Kernel选择，选择conda_tensorflow_p36\n 导入模型函数，加载训练模型。\n本实验神经网络的模型框架位于 trainer/ 文件夹中  启动训练脚本\n出于现场时间考虑，默认学习3个Epoch 3轮训练后的结果如下所示： 我们可以看到loss以及MAE误差在逐渐减小\n  "
+},
+{
+	"uri": "/060_prediction/",
+	"title": "模型预测",
+	"tags": [],
+	"description": "",
+	"content": " 加载预测及可视化函数 提取训练得到的模型，请将下面的文件路径更换为 \u0026ldquo;SavedModel written to：\u0026rdquo;后的地址，然后执行该cell\n 加载模型  生成待测试数据 执行后，将在 test_samples 文件夹内生成6个测试数据  预测并生成预测结果  点击左侧生成的可视化结果-Prediction.helm, 然后点击左上角的Trust 随后即可看到预测的结果：   "
+},
+{
+	"uri": "/categories/",
+	"title": "Categories",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "/authors/",
+	"title": "Credits",
+	"tags": [],
+	"description": "",
+	"content": " Thanks to our wonderful contributors  for making Open Source a better place! Please go to Contributors page to checkout authors for this Workshop\n"
+},
+{
+	"uri": "/more_resources/",
+	"title": "More Resources",
+	"tags": [],
+	"description": "",
+	"content": " Discover more AWS resources for building and running your application on AWS:\nMore Workshops  Amazon ECS Workshop - Learn how to use Stelligent Mu to deploy a microservice architecture that runs in AWS Fargate Amazon Lightsail Workshop - If you are getting started with the cloud and looking for a way to run an extremely low cost environment Lightsail is perfect. Learn how to deploy to Amazon Lightsail with this workshop.  Tools for AWS Fargate and Amazon ECS  Containers on AWS - Learn common best-practices for running containers on AWS fargate - Command line tool for interacting with AWS Fargate. With just a single command you can build, push, and launch your container in Fargate, orchestrated by ECS. Wonqa is a tool for spinning up disposable QA environments in AWS Fargate, with SSL enabled by Let\u0026rsquo;s Encrypt. More details about Wonqa on the Wonder Engineering blog coldbrew - Fantastic tool that provisions ECS infrastructure, builds and deploys your container, and connects your services to an application load balancer automatically. Has a great developer experience for day to day use mu - Automates everything relating to ECS devops and CI/CD. This framework lets you write a simple metadata file and it constructs all the infrastructure you need so that you can deploy to ECS by simply pushing to your Git repo.  Courses  Microservices with Docker, Flask, and React - Learn how to build, test, and deploy microservices powered by Docker, Flask, React Amazon ECS!  "
+},
+{
+	"uri": "/tags/",
+	"title": "Tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+}]

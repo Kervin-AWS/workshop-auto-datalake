@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>/</loc>
+  </url>
+  
+  <url>
+    <loc>/010_introduction/</loc>
+    <lastmod>2018-10-03T10:17:52-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/020_importdata/021_create_sagemaker/</loc>
+    <lastmod>2018-10-03T10:17:52-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/020_importdata/022_import_from_s3/</loc>
+    <lastmod>2018-10-03T10:17:52-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/020_importdata/</loc>
+  </url>
+  
+  <url>
+    <loc>/030_datashow/</loc>
+  </url>
+  
+  <url>
+    <loc>/040_data_preprocess/</loc>
+  </url>
+  
+  <url>
+    <loc>/050_model_train/</loc>
+  </url>
+  
+  <url>
+    <loc>/060_prediction/</loc>
+  </url>
+  
+  <url>
+    <loc>/categories/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/authors/</loc>
+  </url>
+  
+  <url>
+    <loc>/more_resources/</loc>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
+    <priority>0</priority>
+  </url>
+  
+</urlset>
