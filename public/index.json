@@ -4,7 +4,7 @@
 	"title": "AWS DataLake Workshop",
 	"tags": [],
 	"description": "",
-	"content": "  DataLake Lab 基于车辆轨迹的分析与展示 本实验指南将引导您完成基于AWS服务的Data Lake Lab。\n Overview   数据导入与解密   数据抓取   数据预览   数据盘面制作   "
+	"content": "  DataLake WowkShop 基于车辆轨迹的分析与展示 本实验指南将引导您完成基于AWS服务的Data Lake Lab。\n Overview   数据导入与解密   数据抓取   数据预览   数据盘面制作   "
 },
 {
 	"uri": "/010_introduction/",

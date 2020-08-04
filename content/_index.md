@@ -6,7 +6,7 @@ weight: 1
 
 <div style="text-align: center"><h2></h2></div>
 
-# DataLake Lab 
+# DataLake WowkShop
 # 基于车辆轨迹的分析与展示
 ![cover](images/cover.png)
 
