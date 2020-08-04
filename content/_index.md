@@ -1,5 +1,5 @@
 ---
-title: "AWS DataLake Lab"
+title: "AWS DataLake Workshop"
 chapter: true
 weight: 1
 ---
