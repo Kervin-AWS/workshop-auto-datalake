@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>准备工作 on Amazon EKS Workshop</title>
+    <title>数据导入与解密 on Amazon EKS Workshop</title>
     <link>/020_importdata/</link>
-    <description>Recent content in 准备工作 on Amazon EKS Workshop</description>
+    <description>Recent content in 数据导入与解密 on Amazon EKS Workshop</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     

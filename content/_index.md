@@ -1,14 +1,15 @@
 ---
-title: "AWS 锂电池寿命预测"
+title: "AWS DataLake Lab"
 chapter: true
 weight: 1
 ---
 
 <div style="text-align: center"><h2></h2></div>
 
-# AWS 锂电池寿命预测
+# DataLake Lab 
+# 基于车辆轨迹的分析与展示
 ![cover](images/cover.png)
 
-本实验指南讨论了如何利用AWS SageMaker进行锂电池寿命预测。 
+本实验指南将引导您完成基于AWS服务的Data Lake Lab。 
 
 {{% children showhidden="false" %}}

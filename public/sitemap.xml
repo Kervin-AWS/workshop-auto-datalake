@@ -12,12 +12,12 @@
   </url>
   
   <url>
-    <loc>/020_importdata/021_create_sagemaker/</loc>
+    <loc>/050_dashboard/superset/</loc>
     <lastmod>2018-10-03T10:17:52-07:00</lastmod>
   </url>
   
   <url>
-    <loc>/020_importdata/022_import_from_s3/</loc>
+    <loc>/050_dashboard/quickset/</loc>
     <lastmod>2018-10-03T10:17:52-07:00</lastmod>
   </url>
   
@@ -26,19 +26,15 @@
   </url>
   
   <url>
-    <loc>/030_datashow/</loc>
+    <loc>/030_datacatch/</loc>
   </url>
   
   <url>
-    <loc>/040_data_preprocess/</loc>
+    <loc>/040_data_show/</loc>
   </url>
   
   <url>
-    <loc>/050_model_train/</loc>
-  </url>
-  
-  <url>
-    <loc>/060_prediction/</loc>
+    <loc>/050_dashboard/</loc>
   </url>
   
   <url>

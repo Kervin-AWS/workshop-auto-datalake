@@ -1,66 +1,59 @@
 [
 {
 	"uri": "/",
-	"title": "AWS 锂电池寿命预测",
+	"title": "AWS DataLake Lab",
 	"tags": [],
 	"description": "",
-	"content": "  AWS 锂电池寿命预测 本实验指南讨论了如何利用AWS SageMaker进行锂电池寿命预测。\n Overview   准备工作   数据概览   数据预处理   模型训练   模型预测   "
+	"content": "  DataLake Lab 基于车辆轨迹的分析与展示 本实验指南将引导您完成基于AWS服务的Data Lake Lab。\n Overview   数据导入与解密   数据抓取   数据预览   数据盘面制作   "
 },
 {
 	"uri": "/010_introduction/",
 	"title": "Overview",
 	"tags": [],
 	"description": "",
-	"content": "如何准确的根据电池放电过程中的相关信息，预测出电池的剩余寿命，是一个具有实际生产价值的问题。\n本实验基于公开的锂电池数据集，该数据集收录了124枚电池（APR18650M1A），从出厂到生命终结（电池满电容量为正常值的80%）过程中电流、温度、等关键指标。本实验将基于以上数据，进行锂电池的剩余寿命的预测研究。\n本实验的目标是训练一个可以根据20轮充放电的电池监控历史数据，预测该电池的剩余充电寿命的神经网络，本实验的神经网络架构主要运用 LSTM 和CNN 的融合框架。\n本实验将从SageMaker NoteBook创建开始介绍，并引导您基于SageMaker实现：\n 电池数据导入\n 数据概览\n 数据预处理\n 模型训练\n 模型预测\n  "
+	"content": "Datalake 是云计算利用数据赋能业务的一个关键方法，本实验将基于车联网场景，实现对批量车辆轨迹的云端存储、分析与展示。\n本实验数据集来自于SanFrancisco 500辆出租车30天的（2008年5月17日-6月10日）行驶数据。\n本实验在中国区账号的服务架构如下 global区的服务架构如下 如果您运用中国区账号进行实验，您需要提前配置好docker（数据盘面制作过程将会用到）\n 本实验将从引导您上述服务实现：\n 数据导入与解密\n 数据抓取\n 数据预览\n 数据盘面制作\n  "
 },
 {
-	"uri": "/020_importdata/021_create_sagemaker/",
-	"title": "创建SageMaker笔记本实例",
+	"uri": "/050_dashboard/superset/",
+	"title": "运用Superset配置您的数据盘面",
 	"tags": [],
 	"description": "",
-	"content": "  登陆SageMaker控制台，点击右上角的创建笔记本实例  填写笔记本实例的名称，如battery-prediction，选择合适的实例类型，建议ml.t2.xlarge卷大小请设置为 \u0026gt;= 20g，本实验建议为20g  权限和加密部分，选择“创建新角色” 保持默认，然后选择创建角色。然后点击“创建笔记本实例“ 等待实例加载，大约需要一到两分钟。  点击“打开JupyterLab”，进入SageMaker JupyterLab。 至此您已经完成SageMaker Notebook的创建。\n  "
+	"content": "  基于docker安装Superset\n本实验运用开源BI Superset作为前端盘面展示，用户需要提前配置好docker。Superset Docker镜像https://hub.docker.com/r/tylerfowler/superset\n打开terminal，执行\ndocker pull tylerfowler/superset  下载完成后，执行\ndocker run -d --name superset -p 8088:8088 tylerfowler/superset  随后打开浏览器，输入http://localhost:8088/login/\nusername: admin\npassword: superset\n 在Superset中配置Amazon Athena数据源\n进入docker命令行\n方法1: 点击docker桌面版按钮 方法2:\n通过 sudo docker ps 查看运行中容器名称 输入\nsudo docker exec -it 472bc306878d /bin/bash  进入docker,如下图所示 在docker内执行：\npip install PyAthenaJDBC -i https://pypi.tuna.tsinghua.edu.cn/simple pip install PyAthena -i https://pypi.tuna.tsinghua.edu.cn/simple pip install PyAthena -i https://pypi.tuna.tsinghua.edu.cn/simple pip install psycopg2 -i https://pypi.tuna.tsinghua.edu.cn/simple pip install awscli -i https://pypi.tuna.tsinghua.edu.cn/simple pip install botocore==1.17.6 -i https://pypi.tuna.tsinghua.edu.cn/simple  Docker内配置aws账户信息\n进入aws 控制台查看账号 进入docker，输入aws configure，配置相关信息  进入Superset 获取Athena数据表\n点击添加Databases\n填写Database名称，此处填写taxi_db\n填写Athena连接URL：格式如下\nawsathena+rest://@athena.cn-northwest-1.amazonaws.com.cn/\u0026lt;Athena中数数据库名\u0026gt;?s3_staging_dir=\u0026lt;用来存储查询结果的S3地址\u0026gt;\nawsathena+rest://@athena.cn-northwest-1.amazonaws.com.cn/taxi-trajectory-db?s3_staging_dir=s3://auto-immersion-day-sf-taxi-data-set/athena-output/\n测试连接 成功后点击save\n配置数据表 选择数据库taxi_db，填写表名为taxi_etl_decryp_data，然后点击save  制作Superset线条数据分析图 点击Charts，绘制车辆载客数随时间的变化模块，限制车辆id为\u0026lt;5样本来进行显示。\n按照下图配置聚合函数 然后点击save  制作Superset Map\n新建一个Chart，命名为trajectory_analysis\n按照图中配置筛选条件 点击save保存chart。\n  注意，此处您可能没有底图，后续会指导您配置。\n  配置Superset 盘面\n点击Dashboards，点击新建，新增Row、charts  配置Superset Mapbox 底图\n用户可以在Mapbox申请自己的Mapbox_API_Key\n本实验提供实验用key：\nsk.eyJ1Ijoia2Vydmlu请联系现场工作人员YyJ9.aWMoRw2QA_-7SD2UtLv58w\n随后在本地环境中，打开terminal，输入如下指令，将docker中的Superset配置文件拷贝出来（注意，请将docker ID更换为自己的docker ID）\nsudo docker cp 472bc306878d:/superset/superset_config.py ./  在当前文件夹找到superset_config.py，将上述的Mapbox_API_Key填写到该文件中，如下图所示。\n随后执行\nsudo docker cp ./superset_config.py 472bc306878d:/superset/  将该文件传回docker。\n刷新superset页面，即可出现地图底图   "
 },
 {
-	"uri": "/020_importdata/022_import_from_s3/",
-	"title": "从S3获取导入数据",
+	"uri": "/050_dashboard/quickset/",
+	"title": "运用Quickset配置您的数据盘面",
 	"tags": [],
 	"description": "",
-	"content": "  从github 拉取源码\n将 https://github.com/Kervin-AWS/Auto-Immersion-Day-Lab2.git 复制到下面的框中, 然后点击CLONE  打开data_download_script.ipynb,点击右上角的kernel选择模块，选择conda_tensorflow_p36  逐一选中代码框，然后点击上方的运行按钮  创建data目录  开始下载数据集   "
+	"content": " 进入AWS 控制台，打开QuickSight\n 点击右上角 Manage data  点击左上角 New dataset\n 数据源选择中，选择Athena  选择在上述教程中创建好的Athena数据源名称，此处为 taxi-trajectory-db 点击 Validate connection, 当出现绿色对勾时表示数据源测试连接成功\n点击右侧蓝色 Create data source 按钮\n随后选择上述步骤中创建的database名，数据表名\n随后点击Select 点击Visualize\n 点击Add visual\n选择底部地图模块\n按下图将指定字段拖拽到图标上方的窗格中  设置过滤器 点击Filter，选择id作为过滤变量 在完成下一步参变量设置后，我们将会继续配置过滤器\n 设置过滤参数 按下图设置名为 maxID的参数，设置data 类型为Integer  点击配置filter\n按下图进行配置ID的上限  添加控制单元 点击Add，则实现了对车辆的数目的控制器的添加。\n通过输入数字，可以控制地图上出现的车辆。  点击Share，选择发布报表。   "
 },
 {
 	"uri": "/020_importdata/",
-	"title": "准备工作",
+	"title": "数据导入与解密",
 	"tags": [],
 	"description": "",
-	"content": " 准备工作 本章节将逐步带领您完成本实验的准备工作，您将创建一个 SageMaker 笔记本实例，并从S3获取实验数据。\n我们将分别从以下步骤进行部署：\n 创建SageMaker笔记本实例   从S3获取导入数据   "
+	"content": "目前加密数据encryption_data.csv如下所示，出于便于演示目的，本实验仅对 经纬度 进行了加密。  创建解密数据储存桶，用于存储解密后的数据\n 打开Lambda终端，创建Lambda层\n由于Lambda函数默认系统不含有pandas等第三方库，本实验通过层的方式实现。\n点击左侧扩展栏，选择层。\n选择从S3上传文件，编译好的包存储在：s3://kervin-datalake-taxi-2020/pandas_xlrd.zip ，随后点击创建\n 创建Lambda函数\n点击左侧边栏中的函数，点击创建函数。\n 函数语言选择python3.7，函数名称建议设置为myDecryptor，权限保持默认选项，该选择会生成一个新的角色。随后点击创建函数。\n 编辑Lambda函数\n在lambda_function中填入如下代码，注意，请修改UPLOAD_BUCKET_NAME为上述第二步中创建的解密数据存储桶（此时该桶内应该为空）。\n代码如下\nimport boto3 import pandas as pd UPLOAD_BUCKET_NAME = 'kervin-decryp-data' DOWNLOAD_BUCKET_NAME = 'kervin-datalake-taxi-2020' key = 'encryption_data.csv' new_key = 'decryption_data.csv' # call s3 bucket s3 = boto3.resource('s3') bucket = s3.Bucket(DOWNLOAD_BUCKET_NAME) def encryption(num): newNum = [] for i in str(num): if int(i): newNum.append(str(10 - int(i) * 7 % 10)) else: newNum.append(str(0)) # print int(''.join(newNum)) return int(''.join(newNum)) def decryption_num(num, seed): return num - encryption(seed) / 1000 def my_decryption_apply(arrLike, raw_data, seed): return decryption_num(arrLike[raw_data], arrLike[seed]) # lambda function def lambda_handler(event, context): # download s3 csv file to lambda tmp folder print('start download') local_file_name = '/tmp/data.csv' # s3.Bucket(DOWNLOAD_BUCKET_NAME).download_file(key, local_file_name) print('finish download') df = pd.read_csv(local_file_name) df['lat'] = df.apply( my_decryption_apply, axis=1, args=('lat', 'timestamp')) df['lon'] = df.apply( my_decryption_apply, axis=1, args=('lon', 'timestamp')) df.to_csv(local_file_name, index=False) print('start upload') # upload file from tmp to s3 key upload_bucket = s3.Bucket(UPLOAD_BUCKET_NAME) upload_bucket.upload_file(local_file_name, new_key) print('finish upload') return { 'message': 'success!!' }  在Lambda函数中添加第6步创建的层\n点击Layers，选择添加层。\n下拉框中选择“您的层”，即my-Pandas-Layer\n 拖动右侧滚动条，修改Lambda函数的基本设置，修改Lambda内存以及超时限制\n 同时为了Lambda函数可以将解密后文件写入S3，此处需修改IAM角色权限，点击底部的“查看xxxxx角色”转至IAM控制台。\n点击附加策略\n搜索S3, 将AmazonS3FullAccess添加到策略中(生产环境中将采用严格的权限策略)。\n成功后返回Lambda函数基本设置页面，点击 保存. 配置成功后，点击右上角的保存  执行Lambda函数，进行车辆轨迹解密。\n本实验中通过测试按钮，进行Lambda函数的调用。生产环境中配置触发器即可自动根据S3库中文件的变化调用Lambda。\n点击测试，输入事件名称，然后点击创建\n点击测试，执行Lambda函数。等待约1分钟后，解密成功。\n此时步骤2中创建的解密S3储存桶中以出现解密后的数据decryption_data.csv，可以下载到本地进行预览。\n可以看到经纬度数据已经解密。\n  "
 },
 {
-	"uri": "/030_datashow/",
-	"title": "数据概览",
+	"uri": "/030_datacatch/",
+	"title": "数据抓取",
 	"tags": [],
 	"description": "",
-	"content": "对数据进行预览以及初步分析，有利于我们了解数据，并选择合适的数据预处理以及模型方法。\n本章节将逐步带领您对电池数据进行预览。\n 打开data_analysis.ipynb  导入待分析数据  选取一组数据如b1c2，进行数据探查  绘制时序曲线  绘制电压关系曲线  绘制大电流放电场景下的检测数据  绘制电压与电量微分，电压与温度之间的关系   "
+	"content": "本章节将会运用AWS Glue 服务完成数据的抓取\n 进入Athena，点击连接数据源 选择AWS Glue数据目录，点击下一步\n点击连接到AWS Glue\n 配置Glue\n输入您的爬网程序名称，此处输入taxi-data-glue\n写入第2步中创建的解密数据s3地址，注意，此处地址写到csv文件的文件夹即可，不要将csv文件写入到地址内， 创建Glue IAM角色\n进入IAM控制台，选择创建的角色，附加S3的相关权限。\n完成后返回Glue页面。\n计划选择按需运行，点击下一步。\n输出配置界面，选择添加数据库\n此处输入taxi_trajectorydb,并在前缀里填入taxi 。\n完成后，选中爬网程序，点击运行爬网程序\n运行成功后，可以在左侧边栏中的数据库中表中看见与S3中的同名表。\n然后返回Athena。\n  "
 },
 {
-	"uri": "/040_data_preprocess/",
-	"title": "数据预处理",
+	"uri": "/040_data_show/",
+	"title": "数据预览",
 	"tags": [],
 	"description": "",
-	"content": "本章节将逐步带领您实现数据预处理。\n 打开data_preprocessing.ipynb，并运行函数导入cell  启动数据预处理脚本  加载训练数据生成函数  启动训练数据生成cell   "
+	"content": " 点击刷新按钮，可以看见Athena已经从Glue中获取数据。\n编写SQL语句进行数据预览\n在右侧查询中输入以下语句：\nSelect * from taxi_xxx Limit 100  可以对数据进行预览。 如果出现运行查询按钮为灰色，点击上方创建S3 Athena 输出桶  将unix timestamp转化为time格式\n新建查询，在其中输入，请将表名更换为自己的表名\nCREATE TABLE taxi_etl_decryp_data as SELECT lat, lon, passenger, from_unixtime(timestamp) AS time, id, passenger_cnt FROM taxikervin_decryp_data;  点击运行，我们可以看到左侧出现新的表，且出现了timestamp格式的字段   "
 },
 {
-	"uri": "/050_model_train/",
-	"title": "模型训练",
+	"uri": "/050_dashboard/",
+	"title": "数据盘面制作",
 	"tags": [],
 	"description": "",
-	"content": "本章节将逐步带领您模型训练。\n 打开trainer.ipynb  点击右上角的Kernel选择，选择conda_tensorflow_p36\n 导入模型函数，加载训练模型。\n本实验神经网络的模型框架位于 trainer/ 文件夹中  启动训练脚本\n出于现场时间考虑，默认学习3个Epoch 3轮训练后的结果如下所示： 我们可以看到loss以及MAE误差在逐渐减小\n  "
-},
-{
-	"uri": "/060_prediction/",
-	"title": "模型预测",
-	"tags": [],
-	"description": "",
-	"content": " 加载预测及可视化函数 提取训练得到的模型，请将下面的文件路径更换为 \u0026ldquo;SavedModel written to：\u0026rdquo;后的地址，然后执行该cell\n 加载模型  生成待测试数据 执行后，将在 test_samples 文件夹内生成6个测试数据  预测并生成预测结果  点击左侧生成的可视化结果-Prediction.helm, 然后点击左上角的Trust 随后即可看到预测的结果：   "
+	"content": " 数据盘面制作 本章节将逐步带领您创建自己的数据盘面。\n请根据您是的部署所在区域，选择合适的教程，中国区用户请选择Superset方案，Global用户请选择Quickset方案：\n 运用Superset配置您的数据盘面   运用Quickset配置您的数据盘面   "
 },
 {
 	"uri": "/categories/",
